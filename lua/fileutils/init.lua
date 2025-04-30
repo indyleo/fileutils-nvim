@@ -1,10 +1,10 @@
-M = {}
+local M = {}
 
 function M.setup()
 	-- Files
-	local Fheader = require("function.FileHeader")
-	local Ffilehelper = require("function.FileHelper")
-	local Fcodeblock = require("function.CodeBlockToFile")
+	local Fheader = require("fileutils.functions.FileHeader")
+	local Ffilehelper = require("fileutils.functions.FileHelper")
+	local Fcodeblock = require("fileutils.functions.CodeBlockToFile")
 
 	-- Commands
 
@@ -44,3 +44,5 @@ function M.setup()
 		Fheader.InsertFileHeader()
 	end, { nargs = 0 })
 end
+
+return M
