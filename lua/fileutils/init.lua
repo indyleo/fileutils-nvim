@@ -14,15 +14,15 @@ function M.setup()
 	end, {})
 
 	-- File
-	vim.api.nvim_create_user_command("OilDir", function()
-		Ffilehelper.OilDir()
+	vim.api.nvim_create_user_command("OilDir", function(opts)
+		Ffilehelper.OilDir(opts)
 	end, {
 		nargs = 1,
 		complete = "file",
 	})
 
-	vim.api.nvim_create_user_command("EditFile", function()
-		Ffilehelper.EditFile()
+	vim.api.nvim_create_user_command("EditFile", function(opts)
+		Ffilehelper.EditFile(opts)
 	end, {
 		nargs = "+",
 		complete = "file",
