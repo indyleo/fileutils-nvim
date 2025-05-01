@@ -18,14 +18,15 @@ return {
 
 ```
 
+Add this to your lazy config, hopefully as a separate file.
+
 ## Commands
 
-- `:MarkdownCode` — Extract code blocks from Markdown
-- `:OilDir {path}` — Open a directory in oil.nvim
-- `:EditFile {file}` — Edit one or more files
+- `:MarkdownCode` — Extract code blocks from Markdown like an org document 
+- `:OilDir {path}` — Open a directory in oil.nvim and nvim change directory's into that dir 
+- `:EditFile {file}` — Edit one or more files edit a file and cd into that dir
 - `:AskNewFileName` — Prompt for a new filename
 - `:NewHSplit` — Open file in a horizontal split
 - `:NewVSplit` — Open file in a vertical split
 - `:FileHeader` — Insert a file header
 
-Add this to your lazy config, hopefully as a separate file.
