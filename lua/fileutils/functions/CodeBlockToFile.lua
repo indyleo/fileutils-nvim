@@ -74,6 +74,8 @@ function M.extract_code_blocks()
 	file:write(table.concat(combined_code, "\n"))
 	file:close()
 
+	os.execute("chmod a+x " .. vim.fn.fnameescape(filepath))
+
 	vim.notify("Wrote combined code to: " .. filepath, vim.log.levels.INFO)
 end
 
