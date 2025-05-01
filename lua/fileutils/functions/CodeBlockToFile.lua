@@ -74,9 +74,17 @@ function M.extract_code_blocks()
 	file:write(table.concat(combined_code, "\n"))
 	file:close()
 
-	os.execute("chmod a+x " .. vim.fn.fnameescape(filepath))
+	-- Platform-specific execution permission handling
+	local sysname = vim.loop.os_uname().sysname
+	if sysname == "Windows_NT" then
+		-- Attempt to unblock the file (works for PowerShell scripts or bat files)
+		os.execute('powershell -Command "Try { Unblock-File -Path ' .. vim.fn.shellescape(filepath) .. ' } Catch {}"')
+	else
+		-- Unix-like: chmod a+x
+		os.execute("chmod a+x " .. vim.fn.shellescape(filepath))
+	end
 
-	vim.notify("Wrote combined code to: " .. filepath, vim.log.levels.INFO)
+	vim.notify("Wrote & made executable combined code to: " .. filepath, vim.log.levels.INFO)
 end
 
 return M
