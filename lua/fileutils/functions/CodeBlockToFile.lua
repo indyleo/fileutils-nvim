@@ -10,6 +10,12 @@ local lang_metadata = {
 	javascript = { ext = "js", comment = "//", shebang = "#!/usr/bin/env node" },
 	js = { ext = "js", comment = "//", shebang = "#!/usr/bin/env node" },
 	go = { ext = "go", comment = "//", shebang = nil },
+	c = { ext = "c", comment = "//", shebang = nil },
+	cpp = { ext = "cpp", comment = "//", shebang = nil },
+	java = { ext = "java", comment = "//", shebang = nil },
+	kotlin = { ext = "kt", comment = "//", shebang = nil },
+	rust = { ext = "rs", comment = "//", shebang = nil },
+	r = { ext = "R", comment = "#", shebang = "#!/usr/bin/env R" },
 	ruby = { ext = "rb", comment = "#", shebang = "#!/usr/bin/env ruby" },
 	php = { ext = "php", comment = "//", shebang = "#!/usr/bin/env php" },
 }
