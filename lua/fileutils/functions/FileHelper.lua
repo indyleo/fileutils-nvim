@@ -2,6 +2,11 @@
 
 local M = {}
 
+-- Function to trim leading and trailing spaces
+local function trim(s)
+	return (s:gsub("^%s*(.-)%s*$", "%1"))
+end
+
 -- Cd into dir and open Oil in that dir
 function M.OilDir(opts)
 	local path = opts.args -- Get the path argument
@@ -14,7 +19,7 @@ end
 function M.EditFile(opts)
 	local args = vim.split(opts.args, " ") -- Split arguments into dirpath and filename
 	if #args < 2 then
-		vim.api.nvim_err_writeln("Usage: :EditFile <dirpath> <filename>")
+		vim.notify("Usage: :EditFile <dirpath> <filename>", vim.log.levels.WARN)
 		return
 	end
 
@@ -30,51 +35,55 @@ function M.EditFile(opts)
 	vim.cmd("edit " .. vim.fn.fnameescape(filepath))
 end
 
--- Function to ask for a new file name and open it
-M.AskNewFileName = function()
-	local current_dir = vim.fn.getcwd() -- Get the current working directory
-	vim.ui.input({ prompt = "Enter new file name: " }, function(filename)
-		if filename ~= nil and filename ~= "" then
-			local filepath = current_dir .. "/" .. filename
-			vim.cmd("edit " .. vim.fn.fnameescape(filepath)) -- Open the new file
-		else
-			vim.notify("No file created", vim.log.levels.ERROR) -- Notify if no file is created
-		end
-	end)
+-- Function to ask for a new file name
+function M.AskNewFileName(opts)
+	opts = opts or {}
+	local filename = trim(opts.filename or "")
+
+	if filename == "" then
+		vim.notify("No file name provided.", vim.log.levels.WARN)
+		return
+	end
+
+	local filepath = vim.fs.joinpath(vim.fn.getcwd(), filename)
+	vim.cmd("edit " .. vim.fn.fnameescape(filepath))
+	vim.cmd("startinsert")
 end
 
--- Ask what file to open then opens it in a horizontal split
-M.NewHSplit = function()
-	local current_dir = vim.fn.getcwd()
-	vim.ui.input({ prompt = "Enter file path: " }, function(input)
-		if input and input ~= "" then
-			local filepath = vim.fs.joinpath(current_dir, input)
-			if vim.fn.filereadable(filepath) == 1 then
-				vim.cmd("split " .. vim.fn.fnameescape(filepath))
-			else
-				vim.notify("File does not exist: " .. filepath, vim.log.levels.ERROR)
-			end
-		else
-			vim.notify("No file provided.", vim.log.levels.WARN)
-		end
-	end)
+-- Function to create a new horizontal split and open a file
+function M.NewHSplit(opts)
+	opts = opts or {}
+
+	local path = trim(opts.path or "")
+	if not path or path == "" then
+		vim.notify("No file provided in opts.path.", vim.log.levels.WARN)
+		return
+	end
+
+	local fullpath = vim.fs.joinpath(vim.fn.getcwd(), path)
+	if vim.fn.filereadable(fullpath) == 1 then
+		vim.cmd("split " .. vim.fn.fnameescape(fullpath))
+	else
+		vim.notify("File does not exist: " .. fullpath, vim.log.levels.ERROR)
+	end
 end
 
--- Ask what file to open then opens it in a vertical split
-M.NewVSplit = function()
-	local current_dir = vim.fn.getcwd()
-	vim.ui.input({ prompt = "Enter file path: " }, function(input)
-		if input and input ~= "" then
-			local filepath = vim.fs.joinpath(current_dir, input)
-			if vim.fn.filereadable(filepath) == 1 then
-				vim.cmd("vsplit " .. vim.fn.fnameescape(filepath))
-			else
-				vim.notify("File does not exist: " .. filepath, vim.log.levels.ERROR)
-			end
-		else
-			vim.notify("No file provided.", vim.log.levels.WARN)
-		end
-	end)
+-- Function to create a new vertical split and open a file
+function M.NewVSplit(opts)
+	opts = opts or {}
+
+	local path = trim(opts.path or "")
+	if not path or path == "" then
+		vim.notify("No file provided in opts.path.", vim.log.levels.WARN)
+		return
+	end
+
+	local fullpath = vim.fs.joinpath(vim.fn.getcwd(), path)
+	if vim.fn.filereadable(fullpath) == 1 then
+		vim.cmd("vsplit " .. vim.fn.fnameescape(fullpath))
+	else
+		vim.notify("File does not exist: " .. fullpath, vim.log.levels.ERROR)
+	end
 end
 
 return M

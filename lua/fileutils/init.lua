@@ -11,7 +11,7 @@ function M.setup()
 	-- Markdown
 	vim.api.nvim_create_user_command("MarkdownCode", function()
 		Fcodeblock.extract_code_blocks()
-	end, {})
+	end, { nargs = 0 })
 
 	-- File
 	vim.api.nvim_create_user_command("OilDir", function(opts)
@@ -28,16 +28,28 @@ function M.setup()
 		complete = "file",
 	})
 
-	vim.api.nvim_create_user_command("AskNewFileName", function()
-		Ffilehelper.AskNewFileName()
-	end, { nargs = 0 })
+	vim.api.nvim_create_user_command("AskNewFileName", function(args)
+		Ffilehelper.AskNewFileName({ filename = args.args })
+	end, {
+		nargs = 1,
+		desc = "Create and open a new file in the current working directory",
+	})
 
-	vim.api.nvim_create_user_command("NewHSplit", function()
-		Ffilehelper.NewHSplit()
-	end, { nargs = 0 })
-	vim.api.nvim_create_user_command("NewVSplit", function()
-		Ffilehelper.NewVSplit()
-	end, { nargs = 0 })
+	vim.api.nvim_create_user_command("NewHSplit", function(args)
+		Ffilehelper.NewHSplit({ path = args.args })
+	end, {
+		nargs = 1,
+		complete = "file",
+		desc = "Open a file in a new horizontal split",
+	})
+
+	vim.api.nvim_create_user_command("NewVSplit", function(args)
+		Ffilehelper.NewVSplit({ path = args.args })
+	end, {
+		nargs = 1,
+		complete = "file",
+		desc = "Open a file in a new vertical split",
+	})
 
 	-- Header
 	vim.api.nvim_create_user_command("FileHeader", function()
