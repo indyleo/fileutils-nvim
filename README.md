@@ -1,4 +1,4 @@
-# fileutils-nvim
+# fileutils-nvim.lua
 
 File utils I decided to put in a plugin
 
@@ -29,4 +29,3 @@ Add this to your lazy config, hopefully as a separate file.
 - `:NewHSplit` — Open file in a horizontal split in cwd.
 - `:NewVSplit` — Open file in a vertical split in cwd.
 - `:FileHeader` — Insert a file header.
-
