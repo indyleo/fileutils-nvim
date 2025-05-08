@@ -2,6 +2,7 @@
 
 A small Neovim plugin containing utility commands for common file operations.
 
+## Install
 ```lua
 return {
   "indyleo/fileutils-nvim",
