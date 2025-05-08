@@ -1,6 +1,6 @@
 # fileutils-nvim.lua
 
-File utils I decided to put in a plugin
+A small Neovim plugin containing utility commands for common file operations.
 
 ```lua
 return {
@@ -15,10 +15,9 @@ return {
     },
   },
 }
-
 ```
 
-Add this to your lazy config, hopefully as a separate file.
+Add this snippet to your LazyVim plugin spec (ideally in its own file for better organization).
 
 ## Commands
 
