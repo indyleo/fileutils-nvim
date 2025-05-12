@@ -6,6 +6,7 @@ function M.setup()
   local Fheader = require "fileutils.functions.FileHeader"
   local Ffilehelper = require "fileutils.functions.FileHelper"
   local Fcodeblock = require "fileutils.functions.CodeBlockToFile"
+  local FTerminal = require "fileutils.functions.Terminal"
 
   -- Commands
 
@@ -56,6 +57,10 @@ function M.setup()
   vim.api.nvim_create_user_command("FileHeader", function()
     Fheader.InsertFileHeader()
   end, { nargs = 0 })
+
+  -- Terminal
+  vim.api.nvim_create_user_command("ToggleTerminal", FTerminal.toggle_terminal() {})
+  vim.api.nvim_create_user_command("ToggleLazygit", FTerminal.toggle_lazygit(), {})
 end
 
 return M
