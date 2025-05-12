@@ -1,5 +1,4 @@
--- By: indy | Monday May 12, 2025, 10:25 AM | lua
-
+-- lua/fileutils/functions/Terminal.lua
 local M = {}
 
 local termstate = {
