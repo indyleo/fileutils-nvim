@@ -49,7 +49,7 @@ local function create_floating_window(opts)
   return { buf = buf, win = win }
 end
 
-function M.toggle_terminal()
+M.toggle_terminal = function()
   if not vim.api.nvim_win_is_valid(termstate.floating.win) then
     termstate.floating = create_floating_window { buf = termstate.floating.buf }
     if vim.bo[termstate.floating.buf].buftype ~= "terminal" then
@@ -61,7 +61,7 @@ function M.toggle_terminal()
   end
 end
 
-function M.toggle_lazygit()
+M.toggle_lazygit = function()
   if not vim.api.nvim_win_is_valid(lazystate.floating.win) then
     lazystate.floating = create_floating_window { buf = lazystate.floating.buf }
     if vim.bo[lazystate.floating.buf].buftype ~= "terminal" then

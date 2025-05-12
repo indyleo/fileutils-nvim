@@ -61,10 +61,17 @@ function M.setup()
   -- Terminal
   vim.api.nvim_create_user_command("ToggleTerminal", function()
     FTerminal.toggle_terminal()
-  end, { nargs = 0 })
+  end, {
+    nargs = 0,
+    desc = "Toggle terminal",
+  })
+
   vim.api.nvim_create_user_command("ToggleLazygit", function()
     FTerminal.toggle_lazygit()
-  end, { nargs = 0 })
+  end, {
+    nargs = 0,
+    desc = "Toggle lazygit terminal",
+  })
 end
 
 return M
