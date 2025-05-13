@@ -1,3 +1,12 @@
+-- By: indy | Monday May 12, 2025, 04:33 PM | lua
+-- By: indy | Monday May 12, 2025, 04:33 PM | lua
+-- By: indy | Monday May 12, 2025, 04:33 PM | lua
+-- By: indy | Monday May 12, 2025, 04:33 PM | lua
+-- By: indy | Monday May 12, 2025, 04:33 PM | lua
+-- By: indy | Monday May 12, 2025, 04:33 PM | lua
+-- By: indy | Monday May 12, 2025, 04:33 PM | lua
+-- By: indy | Monday May 12, 2025, 04:33 PM | lua
+-- By: indy | Monday May 12, 2025, 04:33 PM | lua
 -- lua/fileutils/functions/Terminal.lua
 local M = {}
 
@@ -9,6 +18,20 @@ local termstate = {
 }
 
 local lazystate = {
+  floating = {
+    buf = -1,
+    win = -1,
+  },
+}
+
+local cmdstate = {
+  floating = {
+    buf = -1,
+    win = -1,
+  },
+}
+
+local cmdforeverstate = {
   floating = {
     buf = -1,
     win = -1,
@@ -65,11 +88,51 @@ M.toggle_lazygit = function()
   if not vim.api.nvim_win_is_valid(lazystate.floating.win) then
     lazystate.floating = create_floating_window { buf = lazystate.floating.buf }
     if vim.bo[lazystate.floating.buf].buftype ~= "terminal" then
-      vim.cmd.terminal "lazygit"
+      vim.fn.termopen { "sh", "-c", "lazygit" }
     end
     vim.cmd "startinsert"
+    vim.defer_fn(function()
+      if vim.api.nvim_win_is_valid(lazystate.floating.win) then
+        vim.api.nvim_set_current_win(lazystate.floating.win)
+        vim.cmd "startinsert"
+      end
+    end, 50)
   else
     vim.api.nvim_win_hide(lazystate.floating.win)
+  end
+end
+
+M.command_run = function(command)
+  if not vim.api.nvim_win_is_valid(cmdstate.floating.win) then
+    cmdstate.floating = create_floating_window { buf = cmdstate.floating.buf }
+    if vim.bo[cmdstate.floating.buf].buftype ~= "terminal" then
+      vim.fn.termopen { "sh", "-c", command }
+    end
+    vim.cmd "startinsert"
+    vim.defer_fn(function()
+      if vim.api.nvim_win_is_valid(cmdstate.floating.win) then
+        vim.api.nvim_set_current_win(cmdstate.floating.win)
+        vim.cmd "startinsert"
+      end
+    end, 50)
+  end
+end
+
+M.command_run_forever = function(forevercmd)
+  if not vim.api.nvim_win_is_valid(cmdforeverstate.floating.win) then
+    cmdforeverstate.floating = create_floating_window { buf = cmdforeverstate.floating.buf }
+    if vim.bo[cmdforeverstate.floating.buf].buftype ~= "terminal" then
+      vim.fn.termopen { "sh", "-c", forevercmd }
+    end
+    vim.cmd "startinsert"
+    vim.defer_fn(function()
+      if vim.api.nvim_win_is_valid(cmdforeverstate.floating.win) then
+        vim.api.nvim_set_current_win(cmdforeverstate.floating.win)
+        vim.cmd "startinsert"
+      end
+    end, 50)
+  else
+    vim.api.nvim_win_hide(cmdforeverstate.floating.win)
   end
 end
 

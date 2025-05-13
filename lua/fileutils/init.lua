@@ -72,6 +72,22 @@ function M.setup()
     nargs = 0,
     desc = "Toggle lazygit terminal",
   })
+
+  vim.api.nvim_create_user_command("CommandRun", function(args)
+    FTerminal.command_run(args.args)
+  end, {
+    nargs = "+",
+    complete = "shellcmd",
+    desc = "Run command in terminal",
+  })
+
+  vim.api.nvim_create_user_command("CommandRunForever", function(args)
+    FTerminal.command_run_forever(args.args)
+  end, {
+    nargs = "+",
+    complete = "shellcmd",
+    desc = "Run command in terminal forever",
+  })
 end
 
 return M
