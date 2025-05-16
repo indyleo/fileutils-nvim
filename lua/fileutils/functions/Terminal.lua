@@ -1,12 +1,3 @@
--- By: indy | Monday May 12, 2025, 04:33 PM | lua
--- By: indy | Monday May 12, 2025, 04:33 PM | lua
--- By: indy | Monday May 12, 2025, 04:33 PM | lua
--- By: indy | Monday May 12, 2025, 04:33 PM | lua
--- By: indy | Monday May 12, 2025, 04:33 PM | lua
--- By: indy | Monday May 12, 2025, 04:33 PM | lua
--- By: indy | Monday May 12, 2025, 04:33 PM | lua
--- By: indy | Monday May 12, 2025, 04:33 PM | lua
--- By: indy | Monday May 12, 2025, 04:33 PM | lua
 -- lua/fileutils/functions/Terminal.lua
 local M = {}
 
@@ -37,6 +28,11 @@ local cmdforeverstate = {
     win = -1,
   },
 }
+
+local function is_git_repo()
+  local output = vim.fn.systemlist "git rev-parse --is-inside-work-tree"
+  return vim.v.shell_error == 0 and output[1] == "true"
+end
 
 local function create_floating_window(opts)
   opts = opts or {}
@@ -85,6 +81,10 @@ M.toggle_terminal = function()
 end
 
 M.toggle_lazygit = function()
+  if not is_git_repo() then
+    vim.notify("Not in a git repo", vim.log.levels.WARN)
+    return
+  end
   if not vim.api.nvim_win_is_valid(lazystate.floating.win) then
     lazystate.floating = create_floating_window { buf = lazystate.floating.buf }
     if vim.bo[lazystate.floating.buf].buftype ~= "terminal" then
