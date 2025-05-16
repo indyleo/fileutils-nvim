@@ -30,7 +30,7 @@ local cmdforeverstate = {
 }
 
 local function is_git_repo()
-  local output = vim.fn.systemlist "git rev-parse --is-inside-work-tree"
+  local output = vim.fn.systemlist { "sh", "-c", "git rev-parse --is-inside-work-tree" }
   return vim.v.shell_error == 0 and output[1] == "true"
 end
 
