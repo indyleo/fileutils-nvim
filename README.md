@@ -3,9 +3,13 @@
 A small Neovim plugin containing utility commands for common file operations.
 
 ## Install
+
 ```lua
 return {
   "indyleo/fileutils-nvim",
+  config = function()
+    require("fileutils").setup()
+  end,
   dependencies = {
     {
       "stevearc/oil.nvim",
@@ -42,3 +46,4 @@ Add this snippet to your LazyVim plugin spec (ideally in its own file for better
 
 - `:FileHeader`  
   Inserts a standardized file header at the top of the current buffer.
+
