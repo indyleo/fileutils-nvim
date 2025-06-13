@@ -1,4 +1,5 @@
 -- init.lua
+
 local M = {}
 
 function M.setup()
@@ -7,37 +8,39 @@ function M.setup()
   local Ffilehelper = require "fileutils.functions.FileHelper"
   local Fcodeblock = require "fileutils.functions.CodeBlockToFile"
   local FTerminal = require "fileutils.functions.Terminal"
+  local FCword = require "fileutils.functions.Cword"
+  local mkcmd = vim.api.nvim_create_user_command
 
   -- Commands
 
   -- Markdown
-  vim.api.nvim_create_user_command("MarkdownCode", function()
+  mkcmd("MarkdownCode", function()
     Fcodeblock.extract_code_blocks()
   end, { nargs = 0 })
 
   -- File
-  vim.api.nvim_create_user_command("OilDir", function(opts)
+  mkcmd("OilDir", function(opts)
     Ffilehelper.OilDir(opts)
   end, {
     nargs = 1,
     complete = "file",
   })
 
-  vim.api.nvim_create_user_command("EditFile", function(opts)
+  mkcmd("EditFile", function(opts)
     Ffilehelper.EditFile(opts)
   end, {
     nargs = "+",
     complete = "file",
   })
 
-  vim.api.nvim_create_user_command("AskNewFileName", function(args)
+  mkcmd("AskNewFileName", function(args)
     Ffilehelper.AskNewFileName { filename = args.args }
   end, {
     nargs = 1,
     desc = "Create and open a new file in the current working directory",
   })
 
-  vim.api.nvim_create_user_command("NewHSplit", function(args)
+  mkcmd("NewHSplit", function(args)
     Ffilehelper.NewHSplit { path = args.args }
   end, {
     nargs = 1,
@@ -45,7 +48,7 @@ function M.setup()
     desc = "Open a file in a new horizontal split",
   })
 
-  vim.api.nvim_create_user_command("NewVSplit", function(args)
+  mkcmd("NewVSplit", function(args)
     Ffilehelper.NewVSplit { path = args.args }
   end, {
     nargs = 1,
@@ -54,26 +57,26 @@ function M.setup()
   })
 
   -- Header
-  vim.api.nvim_create_user_command("FileHeader", function()
+  mkcmd("FileHeader", function()
     Fheader.InsertFileHeader()
   end, { nargs = 0 })
 
   -- Terminal
-  vim.api.nvim_create_user_command("ToggleTerminal", function()
+  mkcmd("ToggleTerminal", function()
     FTerminal.toggle_terminal()
   end, {
     nargs = 0,
     desc = "Toggle terminal",
   })
 
-  vim.api.nvim_create_user_command("ToggleLazygit", function()
+  mkcmd("ToggleLazygit", function()
     FTerminal.toggle_lazygit()
   end, {
     nargs = 0,
     desc = "Toggle lazygit terminal",
   })
 
-  vim.api.nvim_create_user_command("CommandRun", function(args)
+  mkcmd("CommandRun", function(args)
     FTerminal.command_run(args.args)
   end, {
     nargs = "+",
@@ -81,13 +84,43 @@ function M.setup()
     desc = "Run command in terminal",
   })
 
-  vim.api.nvim_create_user_command("CommandRunForever", function(args)
+  mkcmd("CommandRunForever", function(args)
     FTerminal.command_run_forever(args.args)
   end, {
     nargs = "+",
     complete = "shellcmd",
     desc = "Run command in terminal forever",
   })
+
+  mkcmd("SwapNext", function()
+    FCword.replace(false)
+  end, { desc = "Cycle replacement forward" })
+
+  mkcmd("SwapPrev", function()
+    FCword.replace(true)
+  end, { desc = "Cycle replacement backward" })
+
+  mkcmd("SwapAdd", function(args)
+    FCword.add_swap_group(args)
+  end, {
+    nargs = "+",
+    desc = "Add a new word swap group and save it",
+  })
+
+  mkcmd("SwapRm", function(opts)
+    FCword.remove_swap_group(opts.args)
+  end, {
+    nargs = 1,
+    desc = "Remove a swap group by index",
+  })
+
+  mkcmd("SwapList", function()
+    FCword.list_swap_groups()
+  end, { desc = "List active swap groups" })
+
+  mkcmd("SwapReload", function()
+    FCword.reload_swap_groups()
+  end, { desc = "Reload swap groups from swaps.lua" })
 end
 
 return M
