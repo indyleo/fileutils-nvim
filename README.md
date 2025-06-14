@@ -17,9 +17,7 @@ return {
     },
   },
   lazy = false,
-  config = function()
-    require("fileutils").setup()
-  end,
+  config = true,
 }
 ```
 
