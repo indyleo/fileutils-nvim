@@ -47,22 +47,3 @@ Add this snippet to your LazyVim plugin spec (ideally in its own file for better
 
 - `:FileHeader`  
   Inserts a standardized file header at the top of the current buffer.
-
-- `:SwapNext`/ `:SwapPrev`
-  Swaps the current cword with something depending on what it is in an array, backwards or forwards
-  example:
-
-  - on <-> off
-  - off <-> on
-
-- `:SwapReload`
-  Reloads the active swaps
-
-- `:SwapList`
-  Show a list of active swaps gives an index/number
-
-- `:SwapAdd {...}`
-  add what you want to swap with what
-
-- `:SwapRm`
-  Remove a swap based off its index from `:SwapList`
