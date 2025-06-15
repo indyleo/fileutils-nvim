@@ -5,7 +5,6 @@ local M = {}
 function M.InsertFileHeader()
   -- Only proceed if the buffer is modifiable
   if not vim.bo.modifiable then
-    vim.notify("Buffer is not modifiable", vim.log.levels.WARN)
     return
   end
 
