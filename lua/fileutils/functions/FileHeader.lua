@@ -3,6 +3,12 @@
 local M = {}
 
 function M.InsertFileHeader()
+  -- Only proceed if the buffer is modifiable
+  if not vim.bo.modifiable then
+    vim.notify("Buffer is not modifiable", vim.log.levels.WARN)
+    return
+  end
+
   -- Get system username, date/time, and file type
   local user = os.getenv "USER" or os.getenv "USERNAME" or "unknown"
   local date_time = os.date "%A %B %d, %Y, %I:%M %p"
