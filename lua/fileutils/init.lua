@@ -32,29 +32,6 @@ function M.setup()
     complete = "file",
   })
 
-  mkcmd("AskNewFileName", function(args)
-    Ffilehelper.AskNewFileName { filename = args.args }
-  end, {
-    nargs = 1,
-    desc = "Create and open a new file in the current working directory",
-  })
-
-  mkcmd("NewHSplit", function(args)
-    Ffilehelper.NewHSplit { path = args.args }
-  end, {
-    nargs = 1,
-    complete = "file",
-    desc = "Open a file in a new horizontal split",
-  })
-
-  mkcmd("NewVSplit", function(args)
-    Ffilehelper.NewVSplit { path = args.args }
-  end, {
-    nargs = 1,
-    complete = "file",
-    desc = "Open a file in a new vertical split",
-  })
-
   -- Header
   mkcmd("FileHeader", function()
     Fheader.InsertFileHeader()
