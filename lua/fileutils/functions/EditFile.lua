@@ -1,93 +1,30 @@
--- lua/function/FileHeader.lua
+-- lua/function/EditFile.lua
 
 local M = {}
 
-function M.InsertFileHeader()
-  -- Only proceed if the buffer is modifiable
-  if not vim.bo.modifiable then
+-- Function to trim leading and trailing spaces
+local function trim(s)
+  return (s:gsub("^%s*(.-)%s*$", "%1"))
+end
+
+-- Function to cd into a directory and open a file
+function M.EditFile(opts)
+  local args = vim.split(opts.args, " ") -- Split arguments into dirpath and filename
+  if #args < 2 then
+    vim.notify("Usage: :EditFile <dirpath> <filename>", vim.log.levels.WARN)
     return
   end
 
-  -- Get system username, date/time, and file type
-  local user = os.getenv "USER" or os.getenv "USERNAME" or "unknown"
-  local date_time = os.date "%A %B %d, %Y, %I:%M %p"
-  local file_type = vim.bo.filetype or "unknown"
+  local dirpath = args[1] -- First argument is the directory path
+  local filename = args[2] -- Second argument is the file name
+  local escaped_dirpath = dirpath:gsub("\\", "/") .. "/"
+  local filepath = escaped_dirpath .. filename
 
-  -- Define a table mapping file types to comment styles
-  local comment_styles = {
-    -- "#" Comments
-    python = "#",
-    bash = "#",
-    zsh = "#",
-    fish = "#",
-    sh = "#",
-    ps1 = "#",
-    jsonc = "#",
-    yaml = "#",
-    toml = "#",
-    make = "#",
-    dockerfile = "#",
-    ini = "#",
-    perl = "#",
+  -- Change directory
+  vim.cmd("cd " .. vim.fn.fnameescape(escaped_dirpath))
 
-    -- "//" Comments
-    javascript = "//",
-    typescript = "//",
-    c = "//",
-    cpp = "//",
-    rust = "//",
-    java = "//",
-    kotlin = "//",
-    r = "//",
-    swift = "//",
-    scala = "//",
-    groovy = "//",
-    glsl = "//",
-
-    -- "Wrap Around" Comments
-    html = { "<!--", "-->" },
-    xml = { "<!--", "-->" },
-    markdown = { "<!--", "-->" },
-    css = { "/*", "*/" },
-    scss = { "/*", "*/" },
-    less = { "/*", "*/" },
-
-    -- "Other" styles
-    lua = "--",
-    vim = '"',
-    autohotkey = ";",
-    assembly = ";",
-    lisp = ";",
-    scheme = ";",
-    clojure = ";",
-    elisp = ";",
-    tcl = "#",
-    sql = "--",
-    haskell = "--",
-    ada = "--",
-    rebol = ";",
-    fortran = "!",
-    erlang = "%",
-    prolog = "%",
-    fsharp = "//",
-    ocaml = { "(*", "*)" },
-    coq = { "(*", "*)" },
-    sml = { "(*", "*)" },
-  }
-
-  -- Fallback to "#" if unknown
-  local comment_symbol = comment_styles[file_type] or "#"
-
-  -- Construct the comment header
-  local header
-  if type(comment_symbol) == "table" then
-    header = string.format("%s By: %s | %s | %s %s", comment_symbol[1], user, date_time, file_type, comment_symbol[2])
-  else
-    header = string.format("%s By: %s | %s | %s", comment_symbol, user, date_time, file_type)
-  end
-
-  -- Insert header at the top of the buffer
-  vim.api.nvim_buf_set_lines(0, 0, 0, false, { header })
+  -- Open the file
+  vim.cmd("edit " .. vim.fn.fnameescape(filepath))
 end
 
 return M
