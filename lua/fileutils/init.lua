@@ -5,7 +5,7 @@ local M = {}
 function M.setup()
   -- Files
   local Fheader = require "fileutils.functions.FileHeader"
-  local Ffilehelper = require "fileutils.functions.FileHelper"
+  local Feditfile = require "fileutils.functions.EditFile"
   local Fcodeblock = require "fileutils.functions.CodeBlockToFile"
   local FTerminal = require "fileutils.functions.Terminal"
   local mkcmd = vim.api.nvim_create_user_command
@@ -18,15 +18,8 @@ function M.setup()
   end, { nargs = 0 })
 
   -- File
-  mkcmd("OilDir", function(opts)
-    Ffilehelper.OilDir(opts)
-  end, {
-    nargs = 1,
-    complete = "file",
-  })
-
   mkcmd("EditFile", function(opts)
-    Ffilehelper.EditFile(opts)
+    Feditfile.EditFile(opts)
   end, {
     nargs = "+",
     complete = "file",

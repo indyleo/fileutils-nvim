@@ -1,18 +1,10 @@
--- lua/function/FileHelper.lua
+-- lua/function/EditFile.lua
 
 local M = {}
 
 -- Function to trim leading and trailing spaces
 local function trim(s)
   return (s:gsub("^%s*(.-)%s*$", "%1"))
-end
-
--- Cd into dir and open Oil in that dir
-function M.OilDir(opts)
-  local path = opts.args -- Get the path argument
-  local dirpath = path:gsub("\\", "/") .. "/" -- Normalize path
-  vim.cmd("cd " .. vim.fn.fnameescape(dirpath)) -- Change directory
-  vim.cmd "Oil --float" -- Open Oil in float mode
 end
 
 -- Function to cd into a directory and open a file
