@@ -43,6 +43,7 @@ function M.InsertFileHeader()
     scala = "//",
     groovy = "//",
     glsl = "//",
+    arduino = "//",
 
     -- "Wrap Around" Comments
     html = { "<!--", "-->" },
